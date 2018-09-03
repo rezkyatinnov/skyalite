@@ -1,13 +1,17 @@
 package com.rezkyatinnov.skyalite;
 
-public interface SKyaLitePort {
-    <T> T get(String type, java.lang.reflect.Type classType);
+import android.content.Context;
 
-    <M> boolean save(String type, M model);
+import java.util.List;
 
-    <M> boolean update(String type, M model);
+interface SKyaLitePort {
+    <M> List<M> get(Context context, M model);
 
-    void deleteAll();
+    <M> boolean save(Context context, M model);
 
-    void delete(String type);
+    <M> boolean update(Context context, M model);
+
+    void deleteAll(Context context);
+
+    <M> boolean delete(Context context, M model);
 }

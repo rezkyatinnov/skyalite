@@ -6,21 +6,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class SKyaLiteDB extends SQLiteOpenHelper {
+class SKyaLiteDBVanilla extends SQLiteOpenHelper {
 
-    private static SKyaLiteDB instance = null;
+    private static SKyaLiteDBVanilla instance = null;
 
-    private SKyaLiteDB() {
-        super(SKyaLite.getInstance().getContext(), SKyaLite.getInstance().getDbName(), null, SKyaLite.getInstance().getDbVersion());
+    private SKyaLiteDBVanilla(Context context) {
+        super(context, SKyaLite.getInstance().getDbName(), null, SKyaLite.getInstance().getDbVersion());
     }
 
-    // Lazy Initialization (If required then only)
-    public static SKyaLiteDB getInstance() {
+    public static SKyaLiteDBVanilla getInstance(Context context) {
         if (instance == null) {
-            // Thread Safe. Might be costly operation in some case
-            synchronized (SKyaLiteDB.class) {
+            synchronized (SKyaLiteDBVanilla.class) {
                 if (instance == null) {
-                    instance = new SKyaLiteDB();
+                    instance = new SKyaLiteDBVanilla(context);
                 }
             }
         }
@@ -29,23 +27,25 @@ public class SKyaLiteDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        database.execSQL(SKyaLite.getInstance().CREATE_TABLE);
+        for(String createTable : SKyaLite.getInstance().mCreateTableList) {
+            database.execSQL(createTable);
+        }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.v(SKyaLiteDB.class.getName(),
+        Log.v(SKyaLiteDBVanilla.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
 
         db.execSQL(SKyaLite.getInstance().DROP_ALL);
         onCreate(db);
     }
-    public SKyaLiteDB(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public SKyaLiteDBVanilla(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
-    public SKyaLiteDB(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
+    public SKyaLiteDBVanilla(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
         super(context, name, factory, version, errorHandler);
     }
 }

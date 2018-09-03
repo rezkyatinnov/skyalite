@@ -1,20 +1,18 @@
 package com.rezkyatinnov.skyalite;
 
-import java.lang.reflect.Type;
-
-public class SKyaLiteChiper implements SKyaLitePort {
+class SKyaLiteChiper implements SKyaLitePort {
     @Override
-    public <T> T get(String type, Type classType) {
+    public <T, M> T get(M model) {
         return null;
     }
 
     @Override
-    public <M> boolean save(String type, M model) {
+    public <M> boolean save(M model) {
         return false;
     }
 
     @Override
-    public <M> boolean update(String type, M model) {
+    public <M> boolean update(M model) {
         return false;
     }
 
@@ -24,7 +22,7 @@ public class SKyaLiteChiper implements SKyaLitePort {
     }
 
     @Override
-    public void delete(String type) {
-
+    public <M> boolean delete(M model) {
+        return false;
     }
 }
